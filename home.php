@@ -132,7 +132,7 @@ require_once('blade/AsideUser.php');
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Datatables</h5>
+            <h5 class="card-title">Les Produits approvisionnés</h5>
 
             <!-- Table with stripped rows -->
             <table class="table datatable">

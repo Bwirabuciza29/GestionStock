@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>PMB_Manage</title>
+    <title>GestionStock</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/pmb.png" rel="icon">
-    <link href="assets/img/pmb.png" rel="apple-touch-icon">
+    <link href="#" rel="icon">
+    <link href="#" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
