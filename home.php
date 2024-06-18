@@ -22,9 +22,6 @@ $total_approvisionnements = $stmt->fetch(PDO::FETCH_ASSOC)['total_approvisionnem
 $stmt = $pdo->query("SELECT COUNT(*) AS total_clients FROM client");
 $total_clients = $stmt->fetch(PDO::FETCH_ASSOC)['total_clients'];
 
-// Connectez-vous à la base de données
-$pdo = new PDO('mysql:host=localhost;dbname=gestion_stock', 'root', '');
-
 // Récupérer les informations des produits
 $query = "
     SELECT 
@@ -40,9 +37,27 @@ $query = "
 
 $stmt = $pdo->query($query);
 $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
 
-<?php
+// Récupérer les informations des commandes
+$query = "
+    SELECT 
+        c.id AS commande_id,
+        cl.nomsCli,
+        cl.email,
+        cl.tel,
+        cl.adresse,
+        p.desProd,
+        c.qProd,
+        p.prixUni,
+        c.dateCmd,
+        c.qProd * p.prixUni AS prixTotal
+    FROM commande c
+    JOIN client cl ON c.idCli = cl.id
+    JOIN produit p ON c.idProd = p.id";
+
+$stmt = $pdo->query($query);
+$commandes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Lien vers la NavBar
 require_once('blade/DashHeader.php');
 // Lien vers l'ASIDE
@@ -163,8 +178,118 @@ require_once('blade/AsideUser.php');
       </div>
     </div>
   </section>
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Liste des Commandes</h5>
+
+            <!-- Table with stripped rows -->
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Client</th>
+                  <th scope="col">Produit</th>
+                  <th scope="col">Quantité</th>
+                  <th scope="col">Prix Unitaire</th>
+                  <th scope="col">Prix Total</th>
+                  <th scope="col" class="no-print">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($commandes as $commande) : ?>
+                  <tr>
+                    <td><?= htmlspecialchars($commande['nomsCli']) ?></td>
+                    <td><?= htmlspecialchars($commande['desProd']) ?></td>
+                    <td><?= htmlspecialchars($commande['qProd']) ?></td>
+                    <td><?= htmlspecialchars($commande['prixUni']) ?></td>
+                    <td><?= htmlspecialchars($commande['prixTotal']) ?></td>
+                    <td class="no-print">
+                      <button onclick="printInvoice(<?= $commande['commande_id'] ?>);" class="btn btn-primary">Imprimer la facture</button>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+
+            <?php foreach ($commandes as $commande) : ?>
+              <div id="invoice-<?= $commande['commande_id'] ?>" class="invoice" style="display: none;">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12 text-center">
+                      <h1>Facture</h1>
+                      <p>Numéro de commande : <?= htmlspecialchars($commande['commande_id']) ?></p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <h4>Informations sur le client :</h4>
+                      <p>Nom : <?= htmlspecialchars($commande['nomsCli']) ?></p>
+                      <p>Email : <?= htmlspecialchars($commande['email']) ?></p>
+                      <p>Téléphone : <?= htmlspecialchars($commande['tel']) ?></p>
+                      <p>Adresse : <?= htmlspecialchars($commande['adresse']) ?></p>
+                    </div>
+                    <div class="col-6 text-right">
+                      <h4>Informations sur la commande :</h4>
+                      <p>Date : <?= htmlspecialchars($commande['dateCmd']) ?></p>
+                      <p>Produit : <?= htmlspecialchars($commande['desProd']) ?></p>
+                      <p>Quantité : <?= htmlspecialchars($commande['qProd']) ?></p>
+                      <p>Prix Unitaire : <?= htmlspecialchars($commande['prixUni']) ?></p>
+                      <p>Prix Total : <?= htmlspecialchars($commande['prixTotal']) ?></p>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Produit</th>
+                          <th>Quantité</th>
+                          <th>Prix Unitaire</th>
+                          <th>Prix Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><?= htmlspecialchars($commande['desProd']) ?></td>
+                          <td><?= htmlspecialchars($commande['qProd']) ?></td>
+                          <td><?= htmlspecialchars($commande['prixUni']) ?></td>
+                          <td><?= htmlspecialchars($commande['prixTotal']) ?></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-12 text-center">
+                      <p>Merci pour votre achat!</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
 </main>
 <?php
 // Lien vers le footer
 require_once('blade/DashFooter.php');
 ?>
+
+<script>
+  function printInvoice(commandeId) {
+    const invoiceElement = document.getElementById('invoice-' + commandeId).innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = invoiceElement;
+    window.print();
+    document.body.innerHTML = originalContents;
+    location.reload();
+  }
+</script>

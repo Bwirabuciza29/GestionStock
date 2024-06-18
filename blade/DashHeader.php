@@ -28,6 +28,39 @@
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+
+            .invoice {
+                display: block;
+            }
+        }
+
+        .invoice {
+            margin: 20px 0;
+        }
+
+        .invoice .container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .invoice table {
+            width: 100%;
+        }
+
+        .invoice th,
+        .invoice td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+
 </head>
 
 <body>
