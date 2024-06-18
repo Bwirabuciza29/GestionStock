@@ -70,7 +70,6 @@
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.php" class="logo d-flex align-items-center">
-
                 <span class="d-none d-lg-block">Gestion Stock</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -92,12 +91,7 @@
 
                 <li class="nav-item dropdown">
 
-
-
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-
-
-
 
                     </ul><!-- End Messages Dropdown Items -->
 

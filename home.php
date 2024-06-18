@@ -207,7 +207,7 @@ require_once('blade/AsideUser.php');
                     <td><?= htmlspecialchars($commande['prixUni']) ?></td>
                     <td><?= htmlspecialchars($commande['prixTotal']) ?></td>
                     <td class="no-print">
-                      <button onclick="printInvoice(<?= $commande['commande_id'] ?>);" class="btn btn-primary">Imprimer la facture</button>
+                      <button onclick="printInvoice(<?= $commande['commande_id'] ?>);" class="btn btn-primary"><i class="bi bi-printer"></i></button>
                     </td>
                   </tr>
                 <?php endforeach; ?>
@@ -232,14 +232,7 @@ require_once('blade/AsideUser.php');
                       <p>Téléphone : <?= htmlspecialchars($commande['tel']) ?></p>
                       <p>Adresse : <?= htmlspecialchars($commande['adresse']) ?></p>
                     </div>
-                    <div class="col-6 text-right">
-                      <h4>Informations sur la commande :</h4>
-                      <p>Date : <?= htmlspecialchars($commande['dateCmd']) ?></p>
-                      <p>Produit : <?= htmlspecialchars($commande['desProd']) ?></p>
-                      <p>Quantité : <?= htmlspecialchars($commande['qProd']) ?></p>
-                      <p>Prix Unitaire : <?= htmlspecialchars($commande['prixUni']) ?></p>
-                      <p>Prix Total : <?= htmlspecialchars($commande['prixTotal']) ?></p>
-                    </div>
+
                   </div>
                   <div class="row mt-4">
                     <table class="table table-bordered">
